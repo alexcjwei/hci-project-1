@@ -3,9 +3,9 @@
 Code for HCI Project 1 Fall 2023.
 
 ## Team
-Nick Yuseong Oh
-Joe Li
-Alex Wei
+* Nick Yuseong Oh
+* Joe Li
+* Alex Wei
 
 ## Project Structure
 The important files for the project are below.
@@ -19,6 +19,7 @@ The important files for the project are below.
 ```
 
 The Alexa skill handler is defined in `app.py`.
+
 We keep a version of the Interaction Model in `models/en-US.json`.
 
 
@@ -36,3 +37,4 @@ After that, the build project updates the AWS Lambda function code, which serves
 
 ## Reference
 * [Alexa Skills Kit SDK For Python Reference](https://alexa-skills-kit-python-sdk.readthedocs.io/en/latest/api/)
+* [openai-python](https://github.com/openai/openai-python)
