@@ -7,6 +7,20 @@ Nick Yuseong Oh
 Joe Li
 Alex Wei
 
+## Project Structure
+The important files for the project are below.
+```
+.
+├── app.py              # the Alexa skill handler
+├── buildspec.yml       # build specs for AWS CodeBuild
+├── models              # the Interaction Models
+│   └── en-US.json
+├── skill.json          # Skill manifest
+```
+
+The Alexa skill handler is defined in `app.py`.
+We keep a version of the Interaction Model in `models/en-US.json`.
+
 
 ## Setup
 ```bash

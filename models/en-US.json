@@ -14,20 +14,21 @@
         },
         {
           "name": "AMAZON.HelpIntent",
-          "samples": []
+          "samples": [
+            "help"
+          ]
         },
         {
           "name": "AMAZON.StopIntent",
-          "samples": []
-        },
-        {
-          "slots": [],
-          "name": "HelloWorldIntent",
-          "samples": []
+          "samples": [
+            "stop"
+          ]
         },
         {
           "name": "AMAZON.NavigateHomeIntent",
-          "samples": []
+          "samples": [
+            "home"
+          ]
         },
         {
           "name": "AMAZON.FallbackIntent",
@@ -64,7 +65,7 @@
         }
       ],
       "types": [],
-      "invocationName": "wake sally"
+      "invocationName": "start project one"
     }
   }
 }

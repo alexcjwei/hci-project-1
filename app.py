@@ -1,30 +1,43 @@
 from ask_sdk_core.skill_builder import SkillBuilder
-
-sb = SkillBuilder()
-
-
 from ask_sdk_core.utils import is_request_type, is_intent_name
 from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_model import Response
 from ask_sdk_model.ui import SimpleCard
+import os
+import openai
+from dotenv import load_dotenv
+
+load_dotenv()
+
+sb = SkillBuilder()
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 @sb.request_handler(can_handle_func=is_request_type("LaunchRequest"))
 def launch_request_handler(handler_input: HandlerInput) -> Response:
     speech_text: str = "Welcome to the Alexa Skills Kit, you can say hello!"
 
-    handler_input.response_builder.speak(speech_text).set_card(
-        SimpleCard("Hello World", speech_text)).set_should_end_session(
+    handler_input.response_builder.speak(speech_text).set_should_end_session(
         False)
     return handler_input.response_builder.response
 
 
 @sb.request_handler(can_handle_func=is_request_type("AskChatGPTIntent"))
 def ask_chat_gpt_intent_handler(handler_input: HandlerInput) -> Response:
-    speech_text = "ChatGPT here!"
+    question = handler_input.request_envelope.request.intent.slots['question'].value
 
-    handler_input.response_builder.speak(speech_text).set_card(
-        SimpleCard("Hello World", speech_text)).set_should_end_session(
-        True)
+    # See https://platform.openai.com/docs/api-reference/chat/create 
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a dog."}, # The prompt
+            {"role": "user", "content": question},
+        ]
+    )
+
+    speech_text = response.choices[0].message.content
+
+    handler_input.response_builder.speak(speech_text).set_should_end_session(
+        False)
     return handler_input.response_builder.response
 
 
@@ -32,8 +45,7 @@ def ask_chat_gpt_intent_handler(handler_input: HandlerInput) -> Response:
 def help_intent_handler(handler_input: HandlerInput) -> Response:
     speech_text: str = "Help intent handler here!"
 
-    handler_input.response_builder.speak(speech_text).ask(speech_text).set_card(
-        SimpleCard("Hello World", speech_text))
+    handler_input.response_builder.speak(speech_text).ask(speech_text)
     return handler_input.response_builder.response
 
 
@@ -44,8 +56,7 @@ def help_intent_handler(handler_input: HandlerInput) -> Response:
 def cancel_and_stop_intent_handler(handler_input: HandlerInput) -> Response:
     speech_text: str = "Goodbye!"
 
-    handler_input.response_builder.speak(speech_text).set_card(
-        SimpleCard("Hello World", speech_text)).set_should_end_session(
+    handler_input.response_builder.speak(speech_text).set_should_end_session(
             True)
     return handler_input.response_builder.response
 
