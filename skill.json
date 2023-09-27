@@ -1,0 +1,30 @@
+{
+    "manifest": {
+      "publishingInformation": {
+        "locales": {
+          "en-US": {
+            "summary": "HCI Project 1 Fall 2023",
+            "examplePhrases": [
+              "hello",
+              "help"
+            ],
+            "name": "HCI Project 1",
+            "description": "HCI Project 1"
+          }
+        },
+        "isAvailableWorldwide": true,
+        "testingInstructions": "Non-existent Testing Instructions.",
+        "distributionCountries": []
+      },
+      "apis": {
+        "custom": {
+          "endpoint": {
+            "sourceDir": "lambda",
+            "uri": "hci-project-1"
+          }
+        }
+      },
+      "manifestVersion": "1.0"
+    }
+  }
+  
