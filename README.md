@@ -31,9 +31,15 @@ pip install -r requirements.txt
 ```
 
 ## Deployment
+### Updating the Alexa skill handler / Lambda Function
 Merge a PR to `main`. AWS CodeBuild will pick up on the source change and build the project.
-After that, the build project updates the AWS Lambda function code, which serves as the Alexa Skill endpoint.
 
+Afterwards the build project updates the AWS Lambda function code, which serves as the Alexa Skill endpoint.
+
+### Updating the Interaction Model
+The Interaction Model determines how the application is launched, intents are invoked, and what "slots" or inputs are available within each intent (i.e `{question}`).
+
+From the alexa developer console, go to `Build > Interaction Model > JSON Editor` and upload the `models/en-US.json` file, then run `Build skill`.
 
 ## Reference
 * [Alexa Skills Kit SDK For Python Reference](https://alexa-skills-kit-python-sdk.readthedocs.io/en/latest/api/)
