@@ -2,7 +2,6 @@ from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_core.utils import is_request_type, is_intent_name
 from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_model import Response
-from ask_sdk_model.ui import SimpleCard
 import os
 import openai
 from dotenv import load_dotenv
@@ -21,8 +20,8 @@ def launch_request_handler(handler_input: HandlerInput) -> Response:
     return handler_input.response_builder.response
 
 
-@sb.request_handler(can_handle_func=is_request_type("AskChatGPTIntent"))
-def ask_chat_gpt_intent_handler(handler_input: HandlerInput) -> Response:
+@sb.request_handler(can_handle_func=is_intent_name("AskChatGPTIntent"))
+def ask_chat_gpt_request_handler(handler_input: HandlerInput) -> Response:
     question = handler_input.request_envelope.request.intent.slots['question'].value
 
     # See https://platform.openai.com/docs/api-reference/chat/create 
