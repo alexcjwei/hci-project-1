@@ -30,6 +30,14 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+## Development
+Run the following command to zip the lambda function:
+```
+zip -r lambda.zip lambda
+```
+You can then upload the code to your skill manually.
+
+
 ## Deployment
 ### Updating the Alexa skill handler / Lambda Function
 Merge a PR to `main`. AWS CodeBuild will pick up on the source change and build the project.

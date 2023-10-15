@@ -13,7 +13,7 @@ phases:
       - cd lib
       - zip -r9 ../deployment_package.zip .    # zip requirements for deployment
       - cd ..
-      - zip -g deployment_package.zip app.py   # copies the handler into packages and creates a zip of the contents
+      - zip -g deployment_package.zip lambda/app.py   # copies the handler into packages and creates a zip of the contents
   post_build:
     commands:
       - echo "Updating lambda function..."
