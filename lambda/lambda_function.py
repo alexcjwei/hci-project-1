@@ -14,7 +14,7 @@ from ask_sdk_model import Response
 import openai
 
 sb = SkillBuilder()
-openai.api_key = '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' # Add your OpenAI API key as a default value here
+openai.api_key = 'put-sk-here' # Add your OpenAI API key as a default value here
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
