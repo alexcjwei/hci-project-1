@@ -14,10 +14,22 @@ from ask_sdk_model import Response
 import openai
 
 sb = SkillBuilder()
-openai.api_key = 'put-sk-here' # Add your OpenAI API key as a default value here
+openai.api_key = "temp"
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+@sb.request_handler(can_handle_func=is_intent_name("ReportSymptomIntent"))
+def report_symptom_request_handler(handler_input: HandlerInput) -> Response:
+    question = handler_input.request_envelope.request.intent.slots['symptoms'].value
+    
+    speech_text = "Thank you. It sounds like you might need to see a specialist. I can help with that. Based on your symptoms, I'd recommend considering a neurologist or a general practitioner."
+    
+    reprompt_text = "Which one would you like to explore?"
+
+    handler_input.response_builder.speak(speech_text).ask(reprompt_text)
+    return handler_input.response_builder.response
+
 
 @sb.request_handler(can_handle_func=is_intent_name("AskChatGPTIntent"))
 def ask_chat_gpt_request_handler(handler_input: HandlerInput) -> Response:
