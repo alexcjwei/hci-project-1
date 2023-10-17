@@ -21,33 +21,27 @@ logger.setLevel(logging.INFO)
 
 @sb.request_handler(can_handle_func=is_intent_name("ReportSymptomIntent"))
 def report_symptom_request_handler(handler_input: HandlerInput) -> Response:
-    question = handler_input.request_envelope.request.intent.slots['symptoms'].value
+    request = handler_input.request_envelope.request
+    spoken_text = request.input_transcript
     
-    speech_text = "Thank you. It sounds like you might need to see a specialist. I can help with that. Based on your symptoms, I'd recommend considering a neurologist or a general practitioner."
-    
-    reprompt_text = "Which one would you like to explore?"
+    # Add user's prompt to session attributes
+    session_attr = handler_input.attributes_manager.session_attributes
+    session_attr['messages'].append({"role": "user", "content": "I have a headache."})
 
-    handler_input.response_builder.speak(speech_text).ask(reprompt_text)
-    return handler_input.response_builder.response
+    # question = handler_input.request_envelope.request.intent.slots['symptoms'].value
 
-
-@sb.request_handler(can_handle_func=is_intent_name("AskChatGPTIntent"))
-def ask_chat_gpt_request_handler(handler_input: HandlerInput) -> Response:
-    question = handler_input.request_envelope.request.intent.slots['question'].value
-
-    # # See https://platform.openai.com/docs/api-reference/chat/create 
+    prev_messages = session_attr['messages']
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "You are a dog."}, # The prompt
-            {"role": "user", "content": question},
-        ]
+        messages=prev_messages
     )
-
+    
     speech_text = response.choices[0].message.content
-
-    handler_input.response_builder.speak(speech_text).set_should_end_session(
-        False)
+    session_attr['messages'].append({"role": "assistant", "content": speech_text})
+    
+    # Add assistant's response to session attributes_manager
+    
+    handler_input.response_builder.speak(speech_text)
     return handler_input.response_builder.response
 
 
@@ -56,6 +50,10 @@ def launch_request_handler(handler_input):
     """Handler for Skill Launch."""
     # type: (HandlerInput) -> Response
     speech_text = "Welcome to the Alexa Skills Kit, you can say hello!"
+    
+    # Instantiate session messages
+    session_attr = handler_input.attributes_manager.session_attributes
+    session_attr['messages'] = [{"role": "system", "content": "You are a receptionist helping a college student book an appointment with a doctor."}]
 
     return handler_input.response_builder.speak(speech_text).set_card(
         SimpleCard("Hello World", speech_text)).set_should_end_session(
