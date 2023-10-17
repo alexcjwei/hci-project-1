@@ -195,6 +195,136 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "LIST_OF_SPECIALTIES",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "Orthodontist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Dentist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Dietitian"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Nutritionist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Endocrinologist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Geriatrician"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Neurologist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Nephrologist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Urologist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Allergist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Psychologist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Psychiatrist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Dermatologist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "ENT Specialist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Audiologist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Ophthalmologist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Physical Therapist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Orthopedic Surgeon"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Rheumatologist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Pain Management Specialist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "General Surgeon"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Gastroenterologist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Cardiologist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Infectious Disease Specialist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Pulmonologist"
+                            }
+                        }
+                    ]
                 }
             ]
         }
