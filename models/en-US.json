@@ -78,6 +78,30 @@
                         "I have been feeling {symptoms}",
                         "I have been experiencing {symptoms}"
                     ]
+                },
+                {
+                    "name": "AMAZON.SearchAction<object@LocalBusiness>",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.SearchAction<object@LocalBusiness[openHours.closes]>",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.SearchAction<object@LocalBusiness[openHours]>",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.SearchAction<object@LocalBusiness[telephone]>",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.ReadAction<object@Calendar>",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.SearchAction<object@Calendar>",
+                    "samples": []
                 }
             ],
             "types": [
