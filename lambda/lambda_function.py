@@ -14,70 +14,62 @@ from ask_sdk_model import Response
 import openai
 
 sb = SkillBuilder()
-openai.api_key = 'temp'
+openai.api_key = 'test'
 
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-@sb.request_handler(can_handle_func=is_intent_name("ReportSymptomIntent"))
+@sb.request_handler(can_handle_func=is_intent_name("SymptomReporting"))
 def report_symptom_request_handler(handler_input: HandlerInput) -> Response:
     request = handler_input.request_envelope.request
-    spoken_text = request.input_transcript
-    
-    # Add user's prompt to session attributes
+    spoken_text = handler_input.request_envelope.request.intent.slots['symptoms'].value
+
     session_attr = handler_input.attributes_manager.session_attributes
-    session_attr['messages'].append({"role": "user", "content": "I have a headache."})
+    
+    # Check if 'messages' key exists in session attributes
+    if 'messages' not in session_attr:
+        session_attr['messages'] = []
 
-    # question = handler_input.request_envelope.request.intent.slots['symptoms'].value
+    session_attr['messages'].append({"role": "user", "content": spoken_text})
 
-    prev_messages = session_attr['messages']
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=prev_messages
-    )
+    # Append user's and previous assistant's messages for OpenAI context
+    messages = session_attr['messages']
+
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages
+        )
+        speech_text = response.choices[0].message.content
+        session_attr['messages'].append({"role": "assistant", "content": speech_text})
+
+    except Exception as e:
+        # Log the actual error message to help in debugging
+        logger.error(f"Error occurred: {str(e)}")
+        # Send a generic error message to the user
+        speech_text = "Sorry, I encountered an error. Please try again later."
+
+
+    # Keeping the session open for further interaction
+    handler_input.response_builder.speak(speech_text).ask(speech_text)
     
-    speech_text = response.choices[0].message.content
-    session_attr['messages'].append({"role": "assistant", "content": speech_text})
-    
-    # Add assistant's response to session attributes_manager
-    
-    handler_input.response_builder.speak(speech_text)
     return handler_input.response_builder.response
-
-
-@sb.request_handler(can_handle_func=is_intent_name("AskChatGPTIntent"))
-def ask_chat_gpt_request_handler(handler_input: HandlerInput) -> Response:
-    question = handler_input.request_envelope.request.intent.slots['question'].value
-
-    # # See https://platform.openai.com/docs/api-reference/chat/create 
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "As an AI voice assistant based on ChatGPT, your primary purpose is to engage in conversations with users. You are designed to help users identify medical specialists and book appointments based on the symptoms that they are feeling. You will ask for the user about their symptoms first. Try to get as much information as you can about their symptoms before giving 2 or 3 suggestions on which medical specialists they can see. Remember that your role is to help the user while avoiding unnecessary repetition within this whole conversation, considering conversation history. You should avoid repeating statements like ‘I am AI language model ...’ and ‘You should consult medical professionals’ if you have already mentioned it in the current conversation already. You should keep your response under 100 words."}, # The prompt
-            {"role": "user", "content": question},
-        ]
-    )
-
-    speech_text = response.choices[0].message.content
-
-    handler_input.response_builder.speak(speech_text).set_should_end_session(
-        False)
-    return handler_input.response_builder.response
-
 
 @sb.request_handler(can_handle_func=is_request_type("LaunchRequest"))
 def launch_request_handler(handler_input):
     """Handler for Skill Launch."""
     # type: (HandlerInput) -> Response
-    speech_text = "Welcome to the Alexa Skills Kit, you can say hello!"
-    
-    # Instantiate session messages
+
+    # Initialize or reset the messages in session attributes
     session_attr = handler_input.attributes_manager.session_attributes
-    session_attr['messages'] = [{"role": "system", "content": "As an AI voice assistant based on ChatGPT, your primary purpose is to engage in conversations with users. You are designed to help users identify medical specialists and book appointments based on the symptoms that they are feeling. You will ask for the user about their symptoms first. Try to get as much information as you can about their symptoms before giving 2 or 3 suggestions on which medical specialists they can see. Remember that your role is to help the user while avoiding unnecessary repetition within this whole conversation, considering conversation history. You should avoid repeating statements like ‘I am AI language model ...’ and ‘You should consult medical professionals’ if you have already mentioned it in the current conversation already. You should keep your response under 100 words."}]
+    session_attr['messages'] = []
+
+    # Updated speech text
+    speech_text = "Hello! If you're feeling unwell, tell me your symptoms and I can suggest some medical specialists you might consider seeing."
 
     return handler_input.response_builder.speak(speech_text).set_card(
-        SimpleCard("Hello World", speech_text)).set_should_end_session(
+        SimpleCard("Medical Specialist Assistant", speech_text)).set_should_end_session(
         False).response
 
 

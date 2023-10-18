@@ -65,7 +65,7 @@
                     ]
                 },
                 {
-                    "name": "ReportSymptomIntent",
+                    "name": "SymptomReporting",
                     "slots": [
                         {
                             "name": "symptoms",
@@ -77,6 +77,22 @@
                         "My symptoms include {symptoms}",
                         "I have been feeling {symptoms}",
                         "I have been experiencing {symptoms}"
+                    ]
+                },
+                {
+                    "name": "DoctorRecommendationIntent",
+                    "slots": [
+                        {
+                            "name": "specialty",
+                            "type": "LIST_OF_SPECIALTIES"
+                        }
+                    ],
+                    "samples": [
+                        "I need a {specialty}",
+                        "Can you recommend a good {specialty}",
+                        "I'm looking for a {specialty}",
+                        "Find me a top {specialty}",
+                        "Who is the best {specialty} around"
                     ]
                 },
                 {
