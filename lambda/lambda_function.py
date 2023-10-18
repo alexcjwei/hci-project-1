@@ -14,20 +14,35 @@ from ask_sdk_model import Response
 import openai
 
 sb = SkillBuilder()
-openai.api_key = "temp"
+openai.api_key = 'temp'
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 @sb.request_handler(can_handle_func=is_intent_name("ReportSymptomIntent"))
 def report_symptom_request_handler(handler_input: HandlerInput) -> Response:
-    question = handler_input.request_envelope.request.intent.slots['symptoms'].value
+    request = handler_input.request_envelope.request
+    spoken_text = request.input_transcript
     
-    speech_text = "Thank you. It sounds like you might need to see a specialist. I can help with that. Based on your symptoms, I'd recommend considering a neurologist or a general practitioner."
-    
-    reprompt_text = "Which one would you like to explore?"
+    # Add user's prompt to session attributes
+    session_attr = handler_input.attributes_manager.session_attributes
+    session_attr['messages'].append({"role": "user", "content": "I have a headache."})
 
-    handler_input.response_builder.speak(speech_text).ask(reprompt_text)
+    # question = handler_input.request_envelope.request.intent.slots['symptoms'].value
+
+    prev_messages = session_attr['messages']
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=prev_messages
+    )
+    
+    speech_text = response.choices[0].message.content
+    session_attr['messages'].append({"role": "assistant", "content": speech_text})
+    
+    # Add assistant's response to session attributes_manager
+    
+    handler_input.response_builder.speak(speech_text)
     return handler_input.response_builder.response
 
 
@@ -39,7 +54,7 @@ def ask_chat_gpt_request_handler(handler_input: HandlerInput) -> Response:
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a dog."}, # The prompt
+            {"role": "system", "content": "As an AI voice assistant based on ChatGPT, your primary purpose is to engage in conversations with users. You are designed to help users identify medical specialists and book appointments based on the symptoms that they are feeling. You will ask for the user about their symptoms first. Try to get as much information as you can about their symptoms before giving 2 or 3 suggestions on which medical specialists they can see. Remember that your role is to help the user while avoiding unnecessary repetition within this whole conversation, considering conversation history. You should avoid repeating statements like ‘I am AI language model ...’ and ‘You should consult medical professionals’ if you have already mentioned it in the current conversation already. You should keep your response under 100 words."}, # The prompt
             {"role": "user", "content": question},
         ]
     )
@@ -56,6 +71,10 @@ def launch_request_handler(handler_input):
     """Handler for Skill Launch."""
     # type: (HandlerInput) -> Response
     speech_text = "Welcome to the Alexa Skills Kit, you can say hello!"
+    
+    # Instantiate session messages
+    session_attr = handler_input.attributes_manager.session_attributes
+    session_attr['messages'] = [{"role": "system", "content": "As an AI voice assistant based on ChatGPT, your primary purpose is to engage in conversations with users. You are designed to help users identify medical specialists and book appointments based on the symptoms that they are feeling. You will ask for the user about their symptoms first. Try to get as much information as you can about their symptoms before giving 2 or 3 suggestions on which medical specialists they can see. Remember that your role is to help the user while avoiding unnecessary repetition within this whole conversation, considering conversation history. You should avoid repeating statements like ‘I am AI language model ...’ and ‘You should consult medical professionals’ if you have already mentioned it in the current conversation already. You should keep your response under 100 words."}]
 
     return handler_input.response_builder.speak(speech_text).set_card(
         SimpleCard("Hello World", speech_text)).set_should_end_session(
