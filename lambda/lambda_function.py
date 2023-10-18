@@ -20,6 +20,7 @@ openai.api_key = 'test'
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+# Currently working GPT responses, but need to move on to finding specific specialties 
 @sb.request_handler(can_handle_func=is_intent_name("SymptomReporting"))
 def report_symptom_request_handler(handler_input: HandlerInput) -> Response:
     request = handler_input.request_envelope.request
