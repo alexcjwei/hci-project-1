@@ -48,15 +48,18 @@ def report_symptom_request_handler(handler_input: HandlerInput) -> Response:
     session_attr = handler_input.attributes_manager.session_attributes
     session_attr['messages'].append({"role": "user", "content": message})
 
-    # question = handler_input.request_envelope.request.intent.slots['symptoms'].value
-
     prev_messages = session_attr['messages']
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=prev_messages
-    )
+    try:
+        # Get ChatGPT response
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=prev_messages
+        )
+        speech_text = response.choices[0].message.content
+    except:
+        speech_text = "I'm sorry, I didn't catch that. Can you please repeat what you said?"
+
     
-    speech_text = response.choices[0].message.content
     session_attr['messages'].append({"role": "assistant", "content": speech_text})
     
     # Add assistant's response to session attributes_manager
