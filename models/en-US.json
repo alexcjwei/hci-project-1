@@ -1,7 +1,7 @@
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "my test",
+            "invocationName": "doctor finder",
             "intents": [
                 {
                     "name": "AMAZON.CancelIntent",
@@ -34,6 +34,18 @@
                 {
                     "name": "AMAZON.FallbackIntent",
                     "samples": []
+                },
+                {
+                    "name": "MessageIntent",
+                    "slots": [
+                        {
+                            "name": "message",
+                            "type": "AMAZON.Person"
+                        }
+                    ],
+                    "samples": [
+                        "{message}"
+                    ]
                 },
                 {
                     "name": "AskChatGPTIntent",
