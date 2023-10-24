@@ -26,17 +26,18 @@ SYSTEM_INSTRUCTIONS = (
         "Follow these steps:"
         "1. Ask for the user's symptoms. Get as much information as you can by asking follow-up questions if the symptoms are vague or unclear. "
         "2. Suggest 2 to 3 types of relevant medical specialists based on the symptoms, and explain what each medical specialist specializes in. Ask which one the user would like to see. "
-        "3. Suggest 2 medical specialists (or make them up). For each medical specialist, make up a rating out of 5 stars and a short sentence customer review. Ask the user for their preference. "
-        "4. Ask for the user's medical insurance provider. "
-        "5. Reply that their insurance is accepted by the specialist, and let the user choose from 2 to 3 time slots within the next 3 days (within 8 AM to 6 PM) to meet with the doctor. "
-        "6. Confirm the appointment details with the user. "
-        "7. If the user confirms appointment details, state that the user should receive a confirmation email and a reminder before their appointment. "
+        "3. Ask for the user's location to help you find medical specialists in their area. "
+        "4. Suggest 2 medical specialists (or make them up). For each medical specialist, make up a rating out of 5 stars and a short sentence customer review. Ask the user for their preference. "
+        "5. Ask for the user's medical insurance provider. "
+        "6. Reply that their insurance is accepted by the specialist, and let the user choose from 2 to 3 time slots within the next 3 days (within 8 AM to 6 PM) to meet with the doctor. "
+        "7. Confirm the appointment details with the user. "
+        "8. If the user confirms appointment details, state that the user should receive a confirmation email and a reminder before their appointment. "
         "Otherwise, go back to an earlier step. "
-        "8. Ask if there's anything else you can help with, then end the conversation. "
+        "9. Ask if there's anything else you can help with, then end the conversation. "
         "Remember, your role is to help the user while avoiding unnecessary repetition during the conversation. "
         "Avoid repeating statements like 'I am an AI language model ...' or 'You should consult medical professionals...' if you have already mentioned it in the current conversation. "
         "Avoid compliments like 'Great choice...'. "
-        "Keep each response direct to the point and under 75 words. "
+        "Keep each response direct to the point and under 65 words. "
         "Keep each response professional. "
     )
 
@@ -58,7 +59,10 @@ def report_symptom_request_handler(handler_input: HandlerInput) -> Response:
     )
     
     speech_text = response.choices[0].message.content
-    session_attr['messages'].append({"role": "assistant", "content": speech_text})
+    session_attr['messages'] = [
+        {"role": "system", "content": SYSTEM_INSTRUCTIONS},
+        {"role": "assistant", "content": speech_text},
+    ]
     
     # Add assistant's response to session attributes_manager
     
