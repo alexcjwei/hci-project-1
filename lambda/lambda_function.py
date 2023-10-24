@@ -73,7 +73,10 @@ def launch_request_handler(handler_input):
     
     # Instantiate session messages
     session_attr = handler_input.attributes_manager.session_attributes
-    session_attr['messages'] = [{"role": "system", "content": SYSTEM_INSTRUCTIONS}]
+    session_attr['messages'] = [
+        {"role": "system", "content": SYSTEM_INSTRUCTIONS},
+        {"role": "assistant", "content": speech_text},
+    ]
 
     return handler_input.response_builder.speak(speech_text).set_should_end_session(False).response
 
