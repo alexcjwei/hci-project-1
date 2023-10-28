@@ -37,7 +37,7 @@ SYSTEM_INSTRUCTIONS = (
         "Remember, your role is to help the user while avoiding unnecessary repetition during the conversation. "
         "Avoid repeating statements like 'I am an AI language model ...' or 'You should consult medical professionals...' if you have already mentioned it in the current conversation. "
         "Avoid compliments like 'Great choice...'. "
-        "Keep each response direct to the point and under 65 words. "
+        "Keep each response direct to the point and under 45 words. "
         "Keep each response professional. "
     )
 
